@@ -74,6 +74,23 @@ Easter Egg: https://twitter.com/bbctwo/status/549296800709234688 :)
 
 *Notice: It may be necessary to hit curl few times to let Lambda establish a connection with your machine. Internal server error should appear.*
 
+## Behind the scenes
+
+**aws-lambda-go-proxy** runs a TCP proxy to the target host defined via environment variable *LAMBDA_DEBUG_PROXY*. Whole Lambda traffic is passed to that address, what actually allows for processing Lambda events on a different machine, e.g. a developer host (debugging reasons).
+
+As the Lambda Go runtime uses *net/rpc* internals to communicate, you can preview whole communication with *tcpdump*. Here are some sniffs:
+
+```bash
+InvokeRequest........Payload..........
+ClientContext.tId.....XAmznTraceId.....Deadline......InvokedFunctionArn.....CognitoIdentityId.....CognitoIdentityPoolId....
+...;......InvokeRequest_Timestamp........Seconds.....Nanos.......[......{"resource":"/main","path":"/main","httpMethod":"POST","headers":{"Accept":"*/*","CloudFront-Forwarded-Proto":"https","CloudFront-Is-Desktop-Viewer":"true","CloudFront-Is-Mobile-Viewer":"false","CloudFront-Is-SmartTV-Viewer":"false","CloudFront-Is-Tablet-Viewer":"false","CloudFront-Viewer-Country":"PL","Content-Type":"application/x-www-form-urlencoded","Host":"<redacted>.execute-api.us-west-2.amazonaws.com","User-Agent":"curl/7.30.0","Via":"1.1 <redacted>.cloudfront.net (CloudFront)","X-Amz-Cf-Id":"<redacted>","X-Amzn-Trace-Id":"<redacted>","X-Forwarded-For":"<redacted>","X-Forwarded-Port":"443","X-Forwarded-Proto":"https"},"queryStringParameters":null,"pathParameters":null,"stageVariables":null,"requestContext":{"requestTime":"<redacted>","path":"/prod/main","accountId":"<redacted>","protocol":"HTTP/1.1","resourceId":"<redacted>","stage":"prod","requestTimeEpoch":<redacted>,"requestId":"<redacted>","identity":{"cognitoIdentityPoolId":null,"accountId":null,"cognitoIdentityId":null,"caller":null,"sourceIp":"<redacted>","accessKey":null,"cognitoAuthenticationType":null,"cognitoAuthenticationProvider":null,"userArn":null,"userAgent":"curl/7.30.0","user":null},"resourcePath":"/main","httpMethod":"POST","apiId":"<redacted>"},"body":"horse","isBase64Encoded":false}.$<redacted>.JRoot=<redacted>;Sampled=0.....@>..?]....3arn:aws:lambda:us-west-2:<redacted>:function:main.
+```
+
+```bash
+E.....@.@...........'...-\h...!..."..{.....
+J.|.J.|......Function.Invoke...;...6{"statusCode":200,"headers":null,"body":"Hello horse"}
+```
+
 ## Disclaimer
 
 The idea of passing TCP traffic to remotely running applications has been described and used to simplify debugging process of Go Lambda functions to prevent redeployments. I hope it will attract more users to [AWS Lambda](https://aws.amazon.com/lambda/) based solutions, including Github community.
