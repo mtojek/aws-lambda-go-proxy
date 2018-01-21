@@ -15,6 +15,25 @@ Run **proxy application** as Lambda function and **route all events** (TCP traff
 
 No need to prepare *Test events* or wrap *http.Request* magically. 
 
+## Quickstart
+
+Build **aws-lambda-go-proxy** package:
+
+```bash
+go get github.com/mtojek/aws-lambda-go-proxy
+```
+
+Go to the source directory and run *make* to create a deployment artifact:
+
+```bash
+$ make
+go get -v ./...
+GOOS=linux go build -o main
+zip deployment.zip main
+updating: main (deflated 65%)
+rm main
+```
+
 ## Disclaimer
 
 The idea of passing TCP traffic to remotely running applications has been described and used to simplify debugging process of Go Lambda functions to prevent redeployments. I hope it will attract more users to [AWS Lambda](https://aws.amazon.com/lambda/) based solutions, including Github community.
