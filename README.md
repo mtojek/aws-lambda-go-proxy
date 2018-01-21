@@ -4,6 +4,11 @@
 
 Status: **Done**
 
+![Gopher and Lambda](https://cdn-images-1.medium.com/max/400/1*SncdHqDPypbypdx2QmP6iQ.jpeg)
+
+*Source: medium.com*
+
+
 Briefly, run **Lambda** Go function on your machine and forget about redeployments!
 
 Run **proxy application** as Lambda function and **route all events** (TCP traffic) to a different, **even local** Go application. Forget about long hours of blindly debugging the function code, docker images and SAM models. Pass all **incoming, real Lambda requests** to the Go application that you're **currently developing**.
