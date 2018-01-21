@@ -56,6 +56,9 @@ As you may see I set the *LAMBDA_DEBUG_PROXY* variable to *ngrok* address. It is
 ```bash
 $ ngrok tcp 9999
 ```
+
+Here you can find more details regarding [TCP tunnels](https://ngrok.com/docs#tcp) in ngrok.
+
 Once you have API Gateway API deployed and you a URL similar to the following:
 
 https://hefunef32.execute-api.us-west-2.amazonaws.com/prod/main
