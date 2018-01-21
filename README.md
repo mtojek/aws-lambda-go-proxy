@@ -74,6 +74,14 @@ Easter Egg: https://twitter.com/bbctwo/status/549296800709234688 :)
 
 *Notice: It may be necessary to hit curl few times to let Lambda establish a connection with your machine. Internal server error should appear.*
 
+You should also notice some log entries appearing in your local console:
+
+```bash
+2018/01/21 04:12:01 Processing Lambda request ae976f75-e0af-478c-ad06-3d460fe1881d
+2018/01/21 04:12:05 Processing Lambda request be6fd715-5cfd-4ee7-8f67-2a20c0a98af2
+2018/01/21 04:14:14 Processing Lambda request a7288c78-596e-4772-a4c4-2d1dc9622410
+```
+
 ## Behind the scenes
 
 **aws-lambda-go-proxy** runs a TCP proxy to the target host defined via environment variable *LAMBDA_DEBUG_PROXY*. Whole Lambda traffic is passed to that address, what actually allows for processing Lambda events on a different machine, e.g. a developer host (debugging reasons).
