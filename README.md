@@ -17,6 +17,8 @@ No need to prepare *Test events* or wrap *http.Request* magically.
 
 ## Quickstart
 
+*In this case I will show you how to process requests sent to API Gateway.*
+
 Build **aws-lambda-go-proxy** package:
 
 ```bash
@@ -32,6 +34,27 @@ GOOS=linux go build -o main
 zip deployment.zip main
 updating: main (deflated 65%)
 rm main
+```
+
+In the mean time, let's build and run a sample Go application (for educational reasons) - [Hello World](https://github.com/aws-samples/lambda-go-samples/blob/master/main.go):
+
+```bash
+go get github.com/aws-samples/lambda-go-samples
+_LAMBDA_SERVER_PORT=9999 lambda-go-samples
+```
+
+This will expose the *lambda-go-samples* behind the port 9999 (TCP). If you're curious about this sample, feel free to read the [blog post](https://aws.amazon.com/blogs/compute/announcing-go-support-for-aws-lambda/).
+
+Now, it's time to deploy **aws-lambda-go-proxy** on AWS Lambda. I hope you can figure this out on your own (if not, please read first the mentioned blog post). Few hints:
+
+* *deployment.zip* will be created if you run *make* command, it contains the binary of *aws-lambda-go-proxy*
+* set *LAMBDA_DEBUG_PROXY* environment variable to the remote address of the target application, e.g.: *0.tcp.ngrok.io:12345*
+* configure *API Gateway* trigger (API name: *lambda-go*, Deployment stage: *prod*, Security: *open* remember, this is not secure and only for educational reasons)
+
+As you may see I set the *LAMBDA_DEBUG_PROXY* variable to *ngrok* address. It is due a NAT that's in front of me. With [ngrok](https://ngrok.com/) you can open a direct network tunnel to a specified exposed local port:
+
+```bash
+ngrok tcp 9999
 ```
 
 ## Disclaimer
